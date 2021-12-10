@@ -25,6 +25,11 @@ public class CharacterMotor : MonoBehaviour, IPausable
 
     [SerializeField] ControlSchemeChanged OnControlSchemeChanged;
 
+    [SerializeField] UnityEvent OnPrimary_Begin = new UnityEvent();
+    [SerializeField] UnityEvent OnPrimary_End = new UnityEvent();
+    [SerializeField] UnityEvent OnSecondary_Begin = new UnityEvent();
+    [SerializeField] UnityEvent OnSecondary_End = new UnityEvent();
+
     [Header("Debugging")]
     [SerializeField] bool DEBUG_ShowStepRays = false;
     #pragma warning restore 0649
@@ -102,6 +107,22 @@ public class CharacterMotor : MonoBehaviour, IPausable
     {
         if (EnableUpdates)
             OnToggleSettingsMenu?.Invoke();
+    }
+
+    public void OnFire(InputValue value)
+    {
+        if (value.isPressed)
+            OnPrimary_Begin.Invoke();
+        else
+            OnPrimary_End.Invoke();
+    }
+
+    public void OnSecondary(InputValue value)
+    {
+        if (value.isPressed)
+            OnSecondary_Begin.Invoke();
+        else
+            OnSecondary_End.Invoke();
     }
 
     public void OnControlsChanged(PlayerInput input)
